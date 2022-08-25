@@ -3,6 +3,12 @@
 #include <GLFW/glfw3.h>
 
 int main() {
+
+  //Example - only log information in non-distribution builds
+  #if !(DISTRIBUTION_BUILD)
+  std::cout << "Hello world!" << '\n';
+  #endif
+
   //Initialize glfw:
   if (!glfwInit()) {
     throw "Failed to initialize glfw!";

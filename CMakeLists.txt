@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 3.16.3)
 
+#Print selected build type
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
 #Build output directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 #Project name and version
 project(CrossPlatformTest)
+
+
 
 #Specify CPP standard
 set(CMAKE_CXX_STANDARD 11)
@@ -13,10 +18,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #Build current project as an executable
 add_executable(${PROJECT_NAME})
 
+#Add build type dependent preprocessor definitions
+target_compile_definitions(${PROJECT_NAME} PRIVATE "DISTRIBUTION_BUILD=$<CONFIG:Distribution>")
+
 #Specify source files
 file(GLOB_RECURSE headers src/*.h)
 file(GLOB_RECURSE sources src/*.cpp)
-
 target_sources(${PROJECT_NAME} PRIVATE ${headers} ${sources})
 
 #Set current project as Visual Studio start project

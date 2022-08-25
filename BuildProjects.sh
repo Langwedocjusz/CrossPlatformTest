@@ -1,4 +1,28 @@
 #!/bin/bash
 
-cmake -S . -B ./build
+build=""
+
+PS3="Select build type:"
+options=("Debug" "Release" "Distribution")
+select opt in "${options[@]}"
+
+do
+  case $opt in
+    "Debug")
+      build="-DCMAKE_BUILD_TYPE=Debug"
+      break
+      ;;
+    "Release")
+      build="-DCMAKE_BUILD_TYPE=Release"
+      break
+      ;;
+    "Distribution")
+      build="-DCMAKE_BUILD_TYPE=Distribution"
+      break
+      ;;
+    *) echo "invalid option $REPLY";;
+  esac
+done
+
+cmake -S . -B ./build "${build}" -DCMAKE_CXX_FLAGS_DISTRIBUTION="-O3 -DNDEBUG"
 (cd build && make)
