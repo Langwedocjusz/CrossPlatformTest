@@ -3,15 +3,16 @@ cmake_minimum_required(VERSION 3.16.3)
 #Set the build output directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-#Print selected build type
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+#Print selected build type / available build types in case of Visual Studio
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+	message(STATUS "Build types: ${CMAKE_CONFIGURATION_TYPES}")
+else()
+	message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+endif()
 
-#Configure build settings for custom configurations
-set(BUILD_OPTIONS_DISTRIBUTION -O3 -DNDEBUG)
-
-add_compile_options(
-  "$<$<CONFIG:Distribution>:${BUILD_OPTIONS_DISTRIBUTION}>"
-)
+#Configure build settings for custom configurations (in this case just copy from Release)
+set(CMAKE_C_FLAGS_DISTRIBUTION ${CMAKE_C_FLAGS_RELEASE})
+set(CMAKE_CXX_FLAGS_DISTRIBUTION ${CMAKE_CXX_FLAGS_RELEASE})
 
 #Set the project name (and version)
 project(CrossPlatformTest)
