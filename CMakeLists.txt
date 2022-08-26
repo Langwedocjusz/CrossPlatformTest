@@ -1,15 +1,20 @@
 cmake_minimum_required(VERSION 3.16.3)
 
+#Set the build output directory
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 #Print selected build type
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-#Build output directory
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+#Configure build settings for custom configurations
+set(BUILD_OPTIONS_DISTRIBUTION -O3 -DNDEBUG)
 
-#Project name and version
+add_compile_options(
+  "$<$<CONFIG:Distribution>:${BUILD_OPTIONS_DISTRIBUTION}>"
+)
+
+#Set the project name (and version)
 project(CrossPlatformTest)
-
-
 
 #Specify CPP standard
 set(CMAKE_CXX_STANDARD 11)
@@ -19,7 +24,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(${PROJECT_NAME})
 
 #Add build type dependent preprocessor definitions
-target_compile_definitions(${PROJECT_NAME} PRIVATE "DISTRIBUTION_BUILD=$<CONFIG:Distribution>")
+target_compile_definitions(${PROJECT_NAME} PRIVATE "$<$<CONFIG:Distribution>:DISTRIBUTION_BUILD>")
 
 #Specify source files
 file(GLOB_RECURSE headers src/*.h)
@@ -29,14 +34,14 @@ target_sources(${PROJECT_NAME} PRIVATE ${headers} ${sources})
 #Set current project as Visual Studio start project
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
-#Also build a submodule
+#Also build glfw
 add_subdirectory(vendor/glfw)
 
-#Add include dir of submodule to project's include
+#Add glfw include dir to project's include
 target_include_directories(${PROJECT_NAME} PUBLIC vendor/glfw/include)
 
-#Add submodule dir for linking
+#Add glfw dir for linking
 target_link_directories(${PROJECT_NAME} PRIVATE vendor/glfw/src)
 
-#Link against submodule
+#Link against glfw
 target_link_libraries(${PROJECT_NAME} glfw)

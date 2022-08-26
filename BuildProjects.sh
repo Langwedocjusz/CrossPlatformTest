@@ -24,5 +24,5 @@ do
   esac
 done
 
-cmake -S . -B ./build "${build}" -DCMAKE_CXX_FLAGS_DISTRIBUTION="-O3 -DNDEBUG"
+cmake -S . -B ./build "${build}"
 (cd build && make)

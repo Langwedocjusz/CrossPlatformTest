@@ -5,7 +5,7 @@
 int main() {
 
   //Example - only log information in non-distribution builds
-  #if !(DISTRIBUTION_BUILD)
+  #ifndef DISTRIBUTION_BUILD
   std::cout << "Hello world!" << '\n';
   #endif
 
