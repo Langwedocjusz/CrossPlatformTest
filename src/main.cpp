@@ -2,12 +2,20 @@
 
 #include <GLFW/glfw3.h>
 
-int main() {
+void glfwBoilerPlate();
 
+int main() {
   //Example - only log information in non-distribution builds
   #ifndef DISTRIBUTION_BUILD
   std::cout << "Hello world!" << '\n';
   #endif
+
+  glfwBoilerPlate();
+
+  return 0;
+}
+
+void glfwBoilerPlate() {
 
   //Initialize glfw:
   if (!glfwInit()) {
@@ -40,6 +48,4 @@ int main() {
   //Cleanup
   glfwDestroyWindow(window);
   glfwTerminate();
-
-  return 0;
 }
